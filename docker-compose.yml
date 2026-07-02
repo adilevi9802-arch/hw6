@@ -1,0 +1,39 @@
+services:
+  tools_server:
+    build: ./services/tools_server
+    container_name: oz-hw5-tools
+    ports:
+      - "5005:5005"
+    environment:
+      # Provided via the .env file (see .env.example). Required for /streaming.
+      RAPIDAPI_KEY: ${RAPIDAPI_KEY:?set RAPIDAPI_KEY in your .env file}
+      RAPIDAPI_HOST: ${RAPIDAPI_HOST:-streaming-availability.p.rapidapi.com}
+      REQUEST_TIMEOUT: ${REQUEST_TIMEOUT:-10}
+      DEFAULT_COUNTRY: ${DEFAULT_COUNTRY:-us}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5005/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # Open WebUI — the chat UI that hosts the Knowledge Base (part 1) and the
+  # tool (part 3). It reaches the tool server over the compose network by its
+  # service name, so set the tool's Valve server_url to http://tools_server:5005.
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: oz-hw5-webui
+    ports:
+      - "8080:8080"
+    environment:
+      # First-run admin bootstrap; change these after logging in.
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-change-me-local-dev}
+    volumes:
+      - open-webui-data:/app/backend/data
+    depends_on:
+      - tools_server
+    restart: unless-stopped
+
+volumes:
+  open-webui-data:
