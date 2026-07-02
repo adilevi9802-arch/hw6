@@ -1,4 +1,4 @@
-# HW5 — KB + Local Tool Server + Web UI Function
+# HW6 — KB + Local Tool Server + Web UI Function
 
 **Dataset:** Netflix Shows (Kaggle) · **Live API:** RapidAPI "Streaming Availability" · **Web UI:** Open WebUI
 
