@@ -18,7 +18,6 @@ oz-hw5/
 │       │   ├── config.py        # env-driven config (plain dict)
 │       │   ├── routes.py        # /health and /streaming routes
 │       │   └── rapidapi_client.py  # RapidAPI calls + payload shaping
-│       ├── tests/               # pytest unit tests (no network needed)
 │       ├── wsgi.py              # gunicorn entrypoint (wsgi:app)
 │       ├── Dockerfile
 │       └── requirements.txt
